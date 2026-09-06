@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: payment-gateway-backend
+    env: node
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: node dist/main.js
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: PSP_PUBLIC_KEY
+        sync: false
+      - key: PSP_PRIVATE_KEY
+        sync: false
+      - key: PSP_EVENTS_KEY
+        sync: false
+      - key: PSP_INTEGRITY_KEY
+        sync: false
+      - key: PORT
+        value: 3000

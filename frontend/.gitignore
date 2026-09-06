@@ -7,10 +7,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules/
-dist/
-dist-ssr/
-build/
+node_modules
+dist
+dist-ssr
 *.local
 
 # Editor directories and files
@@ -23,15 +22,3 @@ build/
 *.njsproj
 *.sln
 *.sw?
-
-# Env files
-.env
-.env.*
-!.env.example
-
-# Coverage and IDE
-coverage/
-.agents/
-.claude/
-.cursor/
-.devin/

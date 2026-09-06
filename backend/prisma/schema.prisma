@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String        @id @default(uuid())
+  name        String
+  description String
+  price       Int           // Guardamos el precio en centavos para evitar errores de precisión flotante
+  stock       Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  transactions Transaction[]
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  fullName  String
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  transactions Transaction[]
+}
+
+model Transaction {
+  id                String            @id @default(uuid())
+  status            TransactionStatus @default(PENDING)
+  amount            Int               // Monto del producto (centavos)
+  baseFee           Int               // Fee base fijo (centavos)
+  deliveryFee       Int               // Fee de envío (centavos)
+  totalAmount       Int               // amount + baseFee + deliveryFee
+  providerReference String?           // ID devuelto por el PSP (Wompi, etc.)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  // Relaciones
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String?
+
+  delivery Delivery?
+}
+
+enum TransactionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  ERROR
+}
+
+model Delivery {
+  id            String   @id @default(uuid())
+  address       String
+  city          String
+  region        String?
+  zipCode       String?
+  status        DeliveryStatus @default(PENDING)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relaciones
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  transactionId String      @unique
+}
+
+enum DeliveryStatus {
+  PENDING
+  SHIPPED
+  DELIVERED
+}
