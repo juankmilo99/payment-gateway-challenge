@@ -1,32 +1,75 @@
-# React + TypeScript + Vite
+# Payment Gateway Challenge - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This is the frontend application for the Payment Gateway Challenge. It provides a modern, responsive, and secure onboarding flow for credit card payments.
 
-Currently, two official plugins are available:
+## 🚀 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Framework:** [React](https://react.dev/) with [Vite](https://vitejs.dev/)
+- **Language:** TypeScript
+- **State Management:** [Redux Toolkit](https://redux-toolkit.js.org/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) (Custom UI with Glassmorphism)
+- **Testing:** [Jest](https://jestjs.io/) + React Testing Library
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Mobile-first Design:** Fully responsive UI, prioritizing mobile UX.
+- **Glassmorphism UI:** Modern aesthetics with blurred backdrops and gradient accents.
+- **Dynamic Form Validation:** Real-time form validation and explicit required-field fallbacks.
+- **Credit Card Formatting:** Visual indicators for card networks (e.g., Visa, Mastercard) based on BIN patterns.
+- **Robust State Management:** Redux handles the checkout flow without exposing sensitive data in plain URLs.
+- **High Test Coverage:** Over 90% unit test coverage simulating complete end-to-end user flows.
 
-## Expanding the Oxlint configuration
+## 📦 Project Structure
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```text
+src/
+├── components/
+│   ├── checkout/    # Checkout specific components (e.g., PaymentSummaryBackdrop)
+│   └── ui/          # Reusable UI components (e.g., CreditCardInput, Spinner)
+├── pages/           # Application views (ProductPage, CheckoutPage, ResultPage)
+├── services/        # API communication logic (Axios config)
+├── store/           # Redux store and slices
+├── index.css        # Global styles and CSS variables
+└── main.tsx         # Application entry point
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## 🛠️ Getting Started
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository and navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up environment variables:
+   Create a `.env` file based on `.env.example`:
+   ```bash
+   cp .env.example .env
+   ```
+   *Make sure `VITE_API_URL` points to your backend instance.*
+
+### Running the App
+
+Start the development server:
+```bash
+npm run dev
+```
+
+### Running Tests
+
+Run the test suite with coverage report:
+```bash
+npm run test:cov
+```
+
+## ☁️ Deployment
+
+This frontend is optimized for deployment on platforms like Netlify or Vercel. Continuous deployment is handled via the `main` branch.
