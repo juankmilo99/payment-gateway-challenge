@@ -5,6 +5,7 @@ export class Product {
     public description: string,
     public price: number, // In cents
     public stock: number,
+    public imageUrl?: string | null,
   ) {}
 
   public hasStock(quantity: number = 1): boolean {

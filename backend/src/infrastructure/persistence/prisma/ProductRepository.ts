@@ -10,12 +10,12 @@ export class ProductRepository implements IProductRepository {
   async findById(id: string): Promise<Product | null> {
     const raw = await this.prisma.product.findUnique({ where: { id } });
     if (!raw) return null;
-    return new Product(raw.id, raw.name, raw.description, raw.price, raw.stock);
+    return new Product(raw.id, raw.name, raw.description, raw.price, raw.stock, raw.imageUrl);
   }
 
   async findAll(): Promise<Product[]> {
     const rawList = await this.prisma.product.findMany();
-    return rawList.map(raw => new Product(raw.id, raw.name, raw.description, raw.price, raw.stock));
+    return rawList.map(raw => new Product(raw.id, raw.name, raw.description, raw.price, raw.stock, raw.imageUrl));
   }
 
   async update(product: Product): Promise<void> {
@@ -26,6 +26,7 @@ export class ProductRepository implements IProductRepository {
         description: product.description,
         price: product.price,
         stock: product.stock,
+        imageUrl: product.imageUrl,
       }
     });
   }
