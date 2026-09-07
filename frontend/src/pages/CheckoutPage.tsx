@@ -16,6 +16,7 @@ export default function CheckoutPage() {
   const [showSummary, setShowSummary] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState('');
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   // Fixed fees as per backend logic
   const baseFee = 1500;
@@ -31,15 +32,49 @@ export default function CheckoutPage() {
     return null;
   }
 
+  const validateField = (name: string, value: string) => {
+    let err = '';
+    if (name === 'cardNumber') {
+      const unmasked = value.replace(/\s+/g, '');
+      if (unmasked.length > 0 && unmasked.length < 13) err = 'Tarjeta inválida (mínimo 13 dígitos)';
+    }
+    if (name === 'expMonth') {
+      if (value.length > 0 && (value.length < 2 || parseInt(value) < 1 || parseInt(value) > 12)) err = 'Mes inválido (01-12)';
+    }
+    if (name === 'expYear') {
+      if (value.length > 0 && value.length < 2) err = 'Año inválido (YY)';
+    }
+    if (name === 'cvc') {
+      if (value.length > 0 && value.length < 3) err = 'CVC muy corto';
+    }
+    setValidationErrors(prev => ({ ...prev, [name]: err }));
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, section: 'customer' | 'delivery' | 'payment') => {
     const { name, value } = e.target;
     if (section === 'customer') dispatch(updateCustomer({ [name]: value }));
     if (section === 'delivery') dispatch(updateDelivery({ [name]: value }));
-    if (section === 'payment') dispatch(updatePayment({ [name]: value }));
+    if (section === 'payment') {
+      dispatch(updatePayment({ [name]: value }));
+      validateField(name, value);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Final pre-submit validation
+    const hasErrors = Object.values(validationErrors).some(err => err !== '');
+    if (hasErrors) {
+      setError('Por favor, corrige los errores en el formulario antes de continuar.');
+      return;
+    }
+    if (payment.expMonth.length < 2 || payment.expYear.length < 2 || payment.cvc.length < 3) {
+      setError('Por favor completa todos los datos de la tarjeta correctamente.');
+      return;
+    }
+    
+    setError('');
     setShowSummary(true);
   };
 
@@ -57,7 +92,7 @@ export default function CheckoutPage() {
 
       const response = await api.post('/transactions', payload);
       
-      dispatch(clearSensitiveData()); // Never keep CC in Redux after sending
+      dispatch(clearSensitiveData());
       dispatch(setTransactionResult({
         id: response.data.id,
         status: response.data.status,
@@ -66,7 +101,11 @@ export default function CheckoutPage() {
       
       navigate('/result');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Error al procesar el pago. Por favor intenta nuevamente.');
+      let msg = err.response?.data?.message || 'Error al procesar el pago. Por favor intenta nuevamente.';
+      if (Array.isArray(msg)) {
+        msg = msg.join(' | ');
+      }
+      setError(msg);
       setShowSummary(false);
     } finally {
       setIsProcessing(false);
@@ -141,6 +180,7 @@ export default function CheckoutPage() {
                 onChange={e => handleInputChange(e, 'payment')} 
                 placeholder="0000 0000 0000 0000"
               />
+              {validationErrors.cardNumber && <span className="text-red-400 text-xs mt-1 block">{validationErrors.cardNumber}</span>}
             </div>
             <div className="form-group">
               <label className="form-label">Titular de la Tarjeta</label>
@@ -149,15 +189,18 @@ export default function CheckoutPage() {
             <div className="grid grid-cols-3 gap-4">
               <div className="form-group">
                 <label className="form-label">Mes (MM)</label>
-                <input required type="text" name="expMonth" maxLength={2} value={payment.expMonth} onChange={e => handleInputChange(e, 'payment')} className="form-input" placeholder="MM" />
+                <input required type="text" name="expMonth" maxLength={2} value={payment.expMonth} onChange={e => handleInputChange(e, 'payment')} className={`form-input ${validationErrors.expMonth ? 'border-red-500/50' : ''}`} placeholder="MM" />
+                {validationErrors.expMonth && <span className="text-red-400 text-xs mt-1 block leading-tight">{validationErrors.expMonth}</span>}
               </div>
               <div className="form-group">
                 <label className="form-label">Año (YY)</label>
-                <input required type="text" name="expYear" maxLength={2} value={payment.expYear} onChange={e => handleInputChange(e, 'payment')} className="form-input" placeholder="YY" />
+                <input required type="text" name="expYear" maxLength={2} value={payment.expYear} onChange={e => handleInputChange(e, 'payment')} className={`form-input ${validationErrors.expYear ? 'border-red-500/50' : ''}`} placeholder="YY" />
+                {validationErrors.expYear && <span className="text-red-400 text-xs mt-1 block leading-tight">{validationErrors.expYear}</span>}
               </div>
               <div className="form-group">
                 <label className="form-label">CVC</label>
-                <input required type="password" name="cvc" maxLength={4} value={payment.cvc} onChange={e => handleInputChange(e, 'payment')} className="form-input" placeholder="123" />
+                <input required type="password" name="cvc" maxLength={4} value={payment.cvc} onChange={e => handleInputChange(e, 'payment')} className={`form-input ${validationErrors.cvc ? 'border-red-500/50' : ''}`} placeholder="123" />
+                {validationErrors.cvc && <span className="text-red-400 text-xs mt-1 block leading-tight">{validationErrors.cvc}</span>}
               </div>
             </div>
           </div>
