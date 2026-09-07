@@ -72,7 +72,13 @@ export default function CheckoutPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, section: 'customer' | 'delivery' | 'payment') => {
     let { name, value } = e.target;
-    if (section === 'customer') dispatch(updateCustomer({ [name]: value }));
+    if (section === 'customer') {
+      if (name === 'phone') {
+        // Permite números, espacios, +, -, y paréntesis, pero elimina cualquier letra u otro símbolo raro
+        value = value.replace(/[^\d\s\+\-\(\)]/g, '');
+      }
+      dispatch(updateCustomer({ [name]: value }));
+    }
     if (section === 'delivery') dispatch(updateDelivery({ [name]: value }));
     if (section === 'payment') {
       if (['cardNumber', 'expMonth', 'expYear', 'cvc'].includes(name)) {
