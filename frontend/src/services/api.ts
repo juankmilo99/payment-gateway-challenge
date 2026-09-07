@@ -5,7 +5,7 @@ const COLD_START_TIMEOUT = 45000;
 const NORMAL_TIMEOUT = 15000;
 
 export const api = axios.create({
-  baseURL: (typeof process !== 'undefined' ? process.env.VITE_API_URL : undefined) || 'http://localhost:3000',
+  baseURL: process.env.VITE_API_URL || 'http://localhost:3000',
   timeout: COLD_START_TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
