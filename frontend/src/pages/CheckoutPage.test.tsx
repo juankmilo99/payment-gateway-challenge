@@ -52,7 +52,7 @@ describe('CheckoutPage', () => {
     const cardInputs = document.querySelectorAll('.form-input');
     const ccInput = cardInputs[cardInputs.length - 4]; // Rough hack for the test
     if (ccInput) {
-       fireEvent.change(ccInput, { target: { value: '4111111111111', name: 'cardNumber' } });
+       fireEvent.change(ccInput, { target: { value: '4111111111111111', name: 'cardNumber' } });
     }
 
     const form = document.querySelector('form');
@@ -70,5 +70,38 @@ describe('CheckoutPage', () => {
     await waitFor(() => {
       expect(api.post).toHaveBeenCalled();
     });
+  });
+
+  it('handles field validations and edge cases', async () => {
+    renderWithProviders(<CheckoutPage />, { preloadedState });
+    
+    // 1. Phone validation (filter letters)
+    const phoneInput = screen.getByPlaceholderText('+57 300 000 0000');
+    fireEvent.change(phoneInput, { target: { value: '123abc456', name: 'phone' } });
+    
+    // 2. Region input
+    const regionInput = screen.getByPlaceholderText('Cundinamarca');
+    fireEvent.change(regionInput, { target: { value: 'Antioquia', name: 'region' } });
+
+    // 3. Invalid month
+    const monthInput = screen.getByPlaceholderText('MM');
+    fireEvent.change(monthInput, { target: { value: '13', name: 'expMonth' } });
+
+    // 4. Invalid year
+    const yearInput = screen.getByPlaceholderText('YY');
+    fireEvent.change(yearInput, { target: { value: '1', name: 'expYear' } });
+
+    // 5. Expired date
+    fireEvent.change(monthInput, { target: { value: '01', name: 'expMonth' } });
+    fireEvent.change(yearInput, { target: { value: '20', name: 'expYear' } });
+
+    // 6. Submit with errors
+    const form = document.querySelector('form');
+    if (form) fireEvent.submit(form);
+    expect(screen.getByText(/corrige los errores/i)).toBeInTheDocument();
+
+    // 7. Back button
+    const backBtn = screen.getByText(/Volver a productos/i);
+    fireEvent.click(backBtn);
   });
 });

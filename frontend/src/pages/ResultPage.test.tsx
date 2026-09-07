@@ -28,12 +28,48 @@ describe('ResultPage', () => {
     renderWithProviders(<ResultPage />, { 
       preloadedState: { 
         checkout: { 
-          transactionResult: { id: 'txn-123', status: 'REJECTED' } 
+          transactionResult: { id: 'txn-123456789012345', status: 'REJECTED' } 
         } 
       } 
     });
     
     expect(screen.getByText(/Pago Rechazado/i)).toBeInTheDocument();
     expect(screen.getByText('REJECTED')).toBeInTheDocument();
+  });
+
+  it('allows copying to clipboard and truncates long ids', async () => {
+    // Mock clipboard
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: jest.fn().mockImplementation(() => Promise.resolve()),
+      },
+    });
+
+    renderWithProviders(<ResultPage />, { 
+      preloadedState: { 
+        checkout: { 
+          transactionResult: { id: 'txn-123456789012345', status: 'APPROVED', providerReference: 'provider-ref-long' } 
+        } 
+      } 
+    });
+
+    // Check truncation
+    expect(screen.getByText('txn-1234...2345')).toBeInTheDocument();
+    expect(screen.getByText('provider...long')).toBeInTheDocument();
+
+    const copyIdBtn = screen.getAllByTitle(/Copiar ID/i)[0];
+    expect(copyIdBtn).toBeInTheDocument();
+    copyIdBtn.click();
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith('txn-123456789012345');
+
+    // Test clicking copy reference
+    const copyRefBtn = screen.getAllByTitle(/Copiar Referencia/i)[0];
+    expect(copyRefBtn).toBeInTheDocument();
+    copyRefBtn.click();
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith('provider-ref-long');
+
+    // Test finishing flow
+    const finishBtn = screen.getByText('Volver a la tienda');
+    fireEvent.click(finishBtn);
   });
 });

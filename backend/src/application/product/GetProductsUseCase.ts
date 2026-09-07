@@ -1,4 +1,4 @@
-import { IProductRepository } from '../../domain/product/IProductRepository';
+import type { IProductRepository } from '../../domain/product/IProductRepository';
 import { Product } from '../../domain/product/Product';
 import { Result } from '../../domain/shared/Result';
 import { Injectable, Inject } from '@nestjs/common';
