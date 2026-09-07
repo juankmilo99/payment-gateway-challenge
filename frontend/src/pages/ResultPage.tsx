@@ -92,7 +92,7 @@ export default function ResultPage() {
               <div className="flex items-center gap-2">
                 <span className="font-mono text-emerald-400 text-sm" title={result.providerReference}>{truncateId(result.providerReference)}</span>
                 <button 
-                  onClick={() => handleCopy(result.providerReference, 'provider')}
+                  onClick={() => handleCopy(result.providerReference!, 'provider')}
                   className="text-slate-400 hover:text-white transition-colors p-1"
                   title="Copiar Referencia"
                 >
