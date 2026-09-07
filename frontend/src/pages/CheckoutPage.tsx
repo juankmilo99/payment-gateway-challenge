@@ -71,10 +71,13 @@ export default function CheckoutPage() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, section: 'customer' | 'delivery' | 'payment') => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
     if (section === 'customer') dispatch(updateCustomer({ [name]: value }));
     if (section === 'delivery') dispatch(updateDelivery({ [name]: value }));
     if (section === 'payment') {
+      if (['cardNumber', 'expMonth', 'expYear', 'cvc'].includes(name)) {
+        value = value.replace(/\D/g, ''); // Ensure only numbers are allowed
+      }
       dispatch(updatePayment({ [name]: value }));
       validateField(name, value);
     }

@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsEmail, IsOptional, Length, ValidateNested } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail, IsOptional, Length, ValidateNested, IsNumberString } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CustomerDto {
@@ -35,17 +35,21 @@ export class DeliveryDto {
 export class PaymentDto {
   @IsString()
   @IsNotEmpty()
+  @IsNumberString()
   cardNumber: string;
 
   @IsString()
+  @IsNumberString()
   @Length(2, 2)
   expMonth: string;
 
   @IsString()
+  @IsNumberString()
   @Length(2, 2)
   expYear: string;
 
   @IsString()
+  @IsNumberString()
   @Length(3, 4)
   cvc: string;
 
