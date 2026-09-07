@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IPaymentProvider, PaymentRequest, PaymentResponse, PaymentStatus } from '../../../domain/payment/IPaymentProvider';
+import { IPaymentProvider, PaymentRequest, PaymentResponse, PaymentStatus } from '../../domain/payment/IPaymentProvider';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
