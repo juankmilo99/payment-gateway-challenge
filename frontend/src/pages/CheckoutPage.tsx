@@ -147,102 +147,104 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="container py-8 animate-slide-up">
-      <button 
-        onClick={() => navigate('/')} 
-        className="btn border border-white/20 bg-black/20 hover:bg-white/10 text-white mb-6 max-w-[240px] transition-all"
-      >
-        <ChevronLeft size={18} className="mr-2" /> Volver a productos
-      </button>
+    <>
+      <div className="container py-8 animate-slide-up">
+        <button 
+          onClick={() => navigate('/')} 
+          className="btn border border-white/20 bg-black/20 hover:bg-white/10 text-white mb-6 max-w-[240px] transition-all"
+        >
+          <ChevronLeft size={18} className="mr-2" /> Volver a productos
+        </button>
 
-      <div className="card mb-6">
-        <h2 className="text-lg font-semibold mb-1">Completa tu compra</h2>
-        <p className="text-sm text-slate-400 mb-6">Estás comprando: <strong className="text-white">{productName}</strong></p>
+        <div className="card mb-6">
+          <h2 className="text-lg font-semibold mb-1">Completa tu compra</h2>
+          <p className="text-sm text-slate-400 mb-6">Estás comprando: <strong className="text-white">{productName}</strong></p>
 
-        {error && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-md mb-6 text-sm">
-            {error}
-          </div>
-        )}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-md mb-6 text-sm">
+              {error}
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit}>
-          {/* Datos Personales */}
-          <div className="mb-8">
-            <h3 className="text-md font-medium text-indigo-300 mb-4 pb-2 border-b border-white/5">1. Datos Personales</h3>
-            <div className="form-group">
-              <label className="form-label">Nombre Completo</label>
-              <input required type="text" name="fullName" value={customer.fullName} onChange={e => handleInputChange(e, 'customer')} className="form-input" placeholder="Ej. Juan Pérez" />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Correo Electrónico</label>
-              <input required type="email" name="email" value={customer.email} onChange={e => handleInputChange(e, 'customer')} className="form-input" placeholder="juan@ejemplo.com" />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Teléfono</label>
-              <input required type="tel" maxLength={20} name="phone" value={customer.phone} onChange={e => handleInputChange(e, 'customer')} className="form-input" placeholder="+57 300 000 0000" />
-            </div>
-          </div>
-
-          {/* Envío */}
-          <div className="mb-8">
-            <h3 className="text-md font-medium text-indigo-300 mb-4 pb-2 border-b border-white/5">2. Datos de Envío</h3>
-            <div className="form-group">
-              <label className="form-label">Dirección</label>
-              <input required type="text" name="address" value={delivery.address} onChange={e => handleInputChange(e, 'delivery')} className="form-input" placeholder="Calle 123 #45-67" />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit}>
+            {/* Datos Personales */}
+            <div className="mb-8">
+              <h3 className="text-md font-medium text-indigo-300 mb-4 pb-2 border-b border-white/5">1. Datos Personales</h3>
               <div className="form-group">
-                <label className="form-label">Ciudad</label>
-                <input required type="text" name="city" value={delivery.city} onChange={e => handleInputChange(e, 'delivery')} className="form-input" placeholder="Bogotá" />
+                <label className="form-label">Nombre Completo</label>
+                <input required type="text" name="fullName" value={customer.fullName} onChange={e => handleInputChange(e, 'customer')} className="form-input" placeholder="Ej. Juan Pérez" />
               </div>
               <div className="form-group">
-                <label className="form-label">Región/Estado</label>
-                <input type="text" name="region" value={delivery.region} onChange={e => handleInputChange(e, 'delivery')} className="form-input" placeholder="Cundinamarca" />
+                <label className="form-label">Correo Electrónico</label>
+                <input required type="email" name="email" value={customer.email} onChange={e => handleInputChange(e, 'customer')} className="form-input" placeholder="juan@ejemplo.com" />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Teléfono</label>
+                <input required type="tel" maxLength={20} name="phone" value={customer.phone} onChange={e => handleInputChange(e, 'customer')} className="form-input" placeholder="+57 300 000 0000" />
               </div>
             </div>
-          </div>
 
-          {/* Pago */}
-          <div className="mb-8">
-            <h3 className="text-md font-medium text-indigo-300 mb-4 pb-2 border-b border-white/5">3. Tarjeta de Crédito</h3>
-            <div className="form-group">
-              <label className="form-label">Número de Tarjeta</label>
-              <CreditCardInput 
-                required 
-                name="cardNumber" 
-                value={payment.cardNumber} 
-                onChange={e => handleInputChange(e, 'payment')} 
-                placeholder="0000 0000 0000 0000"
-              />
-              {validationErrors.cardNumber && <span className="text-red-400 text-xs mt-1 block">{validationErrors.cardNumber}</span>}
-            </div>
-            <div className="form-group">
-              <label className="form-label">Titular de la Tarjeta</label>
-              <input required type="text" name="cardHolder" value={payment.cardHolder} onChange={e => handleInputChange(e, 'payment')} className="form-input" placeholder="Como aparece en la tarjeta" />
-            </div>
-            <div className="grid grid-cols-3 gap-4">
+            {/* Envío */}
+            <div className="mb-8">
+              <h3 className="text-md font-medium text-indigo-300 mb-4 pb-2 border-b border-white/5">2. Datos de Envío</h3>
               <div className="form-group">
-                <label className="form-label">Mes (MM)</label>
-                <input required type="text" name="expMonth" maxLength={2} value={payment.expMonth} onChange={e => handleInputChange(e, 'payment')} className={`form-input ${validationErrors.expMonth ? 'border-red-500/50' : ''}`} placeholder="MM" />
-                {validationErrors.expMonth && <span className="text-red-400 text-xs mt-1 block leading-tight">{validationErrors.expMonth}</span>}
+                <label className="form-label">Dirección</label>
+                <input required type="text" name="address" value={delivery.address} onChange={e => handleInputChange(e, 'delivery')} className="form-input" placeholder="Calle 123 #45-67" />
               </div>
-              <div className="form-group">
-                <label className="form-label">Año (YY)</label>
-                <input required type="text" name="expYear" maxLength={2} value={payment.expYear} onChange={e => handleInputChange(e, 'payment')} className={`form-input ${validationErrors.expYear ? 'border-red-500/50' : ''}`} placeholder="YY" />
-                {validationErrors.expYear && <span className="text-red-400 text-xs mt-1 block leading-tight">{validationErrors.expYear}</span>}
-              </div>
-              <div className="form-group">
-                <label className="form-label">CVC</label>
-                <input required type="password" name="cvc" maxLength={4} value={payment.cvc} onChange={e => handleInputChange(e, 'payment')} className={`form-input ${validationErrors.cvc ? 'border-red-500/50' : ''}`} placeholder="123" />
-                {validationErrors.cvc && <span className="text-red-400 text-xs mt-1 block leading-tight">{validationErrors.cvc}</span>}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="form-group">
+                  <label className="form-label">Ciudad</label>
+                  <input required type="text" name="city" value={delivery.city} onChange={e => handleInputChange(e, 'delivery')} className="form-input" placeholder="Bogotá" />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Región/Estado</label>
+                  <input type="text" name="region" value={delivery.region} onChange={e => handleInputChange(e, 'delivery')} className="form-input" placeholder="Cundinamarca" />
+                </div>
               </div>
             </div>
-          </div>
 
-          <button type="submit" className="btn btn-primary w-full shadow-[0_0_20px_rgba(99,102,241,0.2)]">
-            Continuar al Resumen
-          </button>
-        </form>
+            {/* Pago */}
+            <div className="mb-8">
+              <h3 className="text-md font-medium text-indigo-300 mb-4 pb-2 border-b border-white/5">3. Tarjeta de Crédito</h3>
+              <div className="form-group">
+                <label className="form-label">Número de Tarjeta</label>
+                <CreditCardInput 
+                  required 
+                  name="cardNumber" 
+                  value={payment.cardNumber} 
+                  onChange={e => handleInputChange(e, 'payment')} 
+                  placeholder="0000 0000 0000 0000"
+                />
+                {validationErrors.cardNumber && <span className="text-red-400 text-xs mt-1 block">{validationErrors.cardNumber}</span>}
+              </div>
+              <div className="form-group">
+                <label className="form-label">Titular de la Tarjeta</label>
+                <input required type="text" name="cardHolder" value={payment.cardHolder} onChange={e => handleInputChange(e, 'payment')} className="form-input" placeholder="Como aparece en la tarjeta" />
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="form-group">
+                  <label className="form-label">Mes (MM)</label>
+                  <input required type="text" name="expMonth" maxLength={2} value={payment.expMonth} onChange={e => handleInputChange(e, 'payment')} className={`form-input ${validationErrors.expMonth ? 'border-red-500/50' : ''}`} placeholder="MM" />
+                  {validationErrors.expMonth && <span className="text-red-400 text-xs mt-1 block leading-tight">{validationErrors.expMonth}</span>}
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Año (YY)</label>
+                  <input required type="text" name="expYear" maxLength={2} value={payment.expYear} onChange={e => handleInputChange(e, 'payment')} className={`form-input ${validationErrors.expYear ? 'border-red-500/50' : ''}`} placeholder="YY" />
+                  {validationErrors.expYear && <span className="text-red-400 text-xs mt-1 block leading-tight">{validationErrors.expYear}</span>}
+                </div>
+                <div className="form-group">
+                  <label className="form-label">CVC</label>
+                  <input required type="password" name="cvc" maxLength={4} value={payment.cvc} onChange={e => handleInputChange(e, 'payment')} className={`form-input ${validationErrors.cvc ? 'border-red-500/50' : ''}`} placeholder="123" />
+                  {validationErrors.cvc && <span className="text-red-400 text-xs mt-1 block leading-tight">{validationErrors.cvc}</span>}
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" className="btn btn-primary w-full shadow-[0_0_20px_rgba(99,102,241,0.2)]">
+              Continuar al Resumen
+            </button>
+          </form>
+        </div>
       </div>
 
       {showSummary && (
@@ -256,6 +258,6 @@ export default function CheckoutPage() {
           onCancel={() => setShowSummary(false)}
         />
       )}
-    </div>
+    </>
   );
 }
