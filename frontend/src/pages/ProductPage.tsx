@@ -76,16 +76,17 @@ export default function ProductPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
         {products.map((product) => (
           <div key={product.id} className="card overflow-hidden p-0 flex flex-col border border-white/10 hover:border-indigo-500/50 transition-all hover:-translate-y-1">
-            <div className="h-32 bg-black/40 border-b border-white/5 overflow-hidden flex items-center justify-center">
+            <div className="bg-black/40 border-b border-white/5 overflow-hidden flex items-center justify-center py-8">
               {product.imageUrl ? (
                 <img 
                   src={product.imageUrl} 
                   alt={product.name}
                   loading="lazy"
-                  className="w-full h-full object-contain transition-transform hover:scale-105 duration-500 p-2"
+                  style={{ width: '120px', height: '120px', objectFit: 'contain' }}
+                  className="transition-transform hover:scale-110 duration-500 drop-shadow-2xl"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-indigo-500/20 to-purple-600/20 flex items-center justify-center">
+                <div style={{ width: '120px', height: '120px' }} className="bg-gradient-to-br from-indigo-500/20 to-purple-600/20 flex items-center justify-center rounded-lg">
                   <ShoppingBag size={48} className="text-indigo-400 opacity-80" />
                 </div>
               )}
