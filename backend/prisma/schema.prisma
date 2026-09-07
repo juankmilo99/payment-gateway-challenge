@@ -13,6 +13,7 @@ model Product {
   description String
   price       Int           // Guardamos el precio en centavos para evitar errores de precisión flotante
   stock       Int
+  imageUrl    String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   
