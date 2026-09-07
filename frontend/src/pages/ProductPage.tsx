@@ -72,39 +72,39 @@ export default function ProductPage() {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-6 py-8 animate-slide-up flex flex-col flex-grow">
-      <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center text-white">Nuestros Productos</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+      <h1 className="text-3xl md:text-4xl font-bold mb-12 text-center text-white">Nuestros Productos</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
         {products.map((product) => (
           <div key={product.id} className="card overflow-hidden p-0 flex flex-col border border-white/10 hover:border-indigo-500/50 transition-all hover:-translate-y-1">
-            <div className="h-48 md:h-56 bg-black/40 border-b border-white/5 overflow-hidden">
+            <div className="h-32 bg-black/40 border-b border-white/5 overflow-hidden flex items-center justify-center">
               {product.imageUrl ? (
                 <img 
                   src={product.imageUrl} 
                   alt={product.name}
                   loading="lazy"
-                  className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
+                  className="w-full h-full object-contain transition-transform hover:scale-105 duration-500 p-2"
                 />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-indigo-500/20 to-purple-600/20 flex items-center justify-center">
-                  <ShoppingBag size={64} className="text-indigo-400 opacity-80" />
+                  <ShoppingBag size={48} className="text-indigo-400 opacity-80" />
                 </div>
               )}
             </div>
-            <div className="p-6 flex flex-col flex-1">
-              <h2 className="text-xl font-bold mb-2 text-white line-clamp-2">{product.name}</h2>
+            <div className="p-6 flex flex-col flex-1 items-center text-center">
+              <h2 className="text-xl font-bold mb-3 text-white line-clamp-2">{product.name}</h2>
               <p className="text-slate-400 text-sm mb-6 line-clamp-3 flex-1">
                 {product.description}
               </p>
               
-              <div className="flex items-center justify-between mb-6">
-                <div>
+              <div className="flex w-full items-center justify-between mb-6 px-2">
+                <div className="text-left">
                   <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">Precio</p>
                   <p className="text-2xl font-bold text-white">${(product.price / 100).toFixed(2)}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">Disponibilidad</p>
                   {product.stock > 0 ? (
-                    <p className="text-emerald-400 font-medium">{product.stock} en stock</p>
+                    <p className="text-emerald-400 font-medium">{product.stock} disp.</p>
                   ) : (
                     <p className="text-red-400 font-medium">Agotado</p>
                   )}
