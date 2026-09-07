@@ -34,15 +34,35 @@ export default function CheckoutPage() {
 
   const validateField = (name: string, value: string) => {
     let err = '';
+    const currentYear = new Date().getFullYear() % 100;
+    const currentMonth = new Date().getMonth() + 1;
+
     if (name === 'cardNumber') {
       const unmasked = value.replace(/\s+/g, '');
       if (unmasked.length > 0 && unmasked.length < 13) err = 'Tarjeta inválida (mínimo 13 dígitos)';
     }
-    if (name === 'expMonth') {
-      if (value.length > 0 && (value.length < 2 || parseInt(value) < 1 || parseInt(value) > 12)) err = 'Mes inválido (01-12)';
-    }
-    if (name === 'expYear') {
-      if (value.length > 0 && value.length < 2) err = 'Año inválido (YY)';
+    if (name === 'expMonth' || name === 'expYear') {
+      const mVal = name === 'expMonth' ? value : payment.expMonth;
+      const yVal = name === 'expYear' ? value : payment.expYear;
+      
+      if (name === 'expMonth' && value.length > 0 && (value.length < 2 || parseInt(value) < 1 || parseInt(value) > 12)) {
+        err = 'Mes inválido (01-12)';
+      } else if (name === 'expYear' && value.length > 0 && value.length < 2) {
+        err = 'Año inválido (YY)';
+      } else if (mVal.length === 2 && yVal.length === 2) {
+        const y = parseInt(yVal);
+        const m = parseInt(mVal);
+        if (y < currentYear || (y === currentYear && m < currentMonth)) {
+          err = 'Tarjeta expirada';
+          // Also flag the other field if expired
+          setValidationErrors(prev => ({ ...prev, expMonth: 'Tarjeta expirada', expYear: 'Tarjeta expirada' }));
+          return; // Skip normal setting below to avoid overriding
+        } else {
+          // Clear both if valid
+          setValidationErrors(prev => ({ ...prev, expMonth: '', expYear: '' }));
+          return;
+        }
+      }
     }
     if (name === 'cvc') {
       if (value.length > 0 && value.length < 3) err = 'CVC muy corto';
