@@ -41,6 +41,7 @@ describe('CheckoutPage', () => {
     // Fill required fields
     fireEvent.change(screen.getByPlaceholderText('juan@ejemplo.com'), { target: { value: 'test@test.com', name: 'email' } });
     fireEvent.change(screen.getByPlaceholderText('Ej. Juan Pérez'), { target: { value: 'Juan', name: 'fullName' } });
+    fireEvent.change(screen.getByPlaceholderText('+57 300 000 0000'), { target: { value: '3000000000', name: 'phone' } });
     fireEvent.change(screen.getByPlaceholderText('Calle 123 #45-67'), { target: { value: 'Calle', name: 'address' } });
     fireEvent.change(screen.getByPlaceholderText('Bogotá'), { target: { value: 'Bogota', name: 'city' } });
     fireEvent.change(screen.getByPlaceholderText('Como aparece en la tarjeta'), { target: { value: 'Juan', name: 'cardHolder' } });
@@ -75,6 +76,20 @@ describe('CheckoutPage', () => {
   it('handles field validations and edge cases', async () => {
     renderWithProviders(<CheckoutPage />, { preloadedState });
     
+    // 0. Submit empty form
+    const form = document.querySelector('form');
+    if (form) fireEvent.submit(form);
+    expect(screen.getByText(/completa todos los campos/i)).toBeInTheDocument();
+
+    // Fill required fields to pass the empty check
+    fireEvent.change(screen.getByPlaceholderText('juan@ejemplo.com'), { target: { value: 'test@test.com', name: 'email' } });
+    fireEvent.change(screen.getByPlaceholderText('Ej. Juan Pérez'), { target: { value: 'Juan', name: 'fullName' } });
+    fireEvent.change(screen.getByPlaceholderText('Calle 123 #45-67'), { target: { value: 'Calle', name: 'address' } });
+    fireEvent.change(screen.getByPlaceholderText('Bogotá'), { target: { value: 'Bogota', name: 'city' } });
+    fireEvent.change(screen.getByPlaceholderText('Como aparece en la tarjeta'), { target: { value: 'Juan', name: 'cardHolder' } });
+    fireEvent.change(screen.getByPlaceholderText('0000 0000 0000 0000'), { target: { value: '4111111111111111', name: 'cardNumber' } });
+    fireEvent.change(screen.getByPlaceholderText('123'), { target: { value: '123', name: 'cvc' } });
+
     // 1. Phone validation (filter letters)
     const phoneInput = screen.getByPlaceholderText('+57 300 000 0000');
     fireEvent.change(phoneInput, { target: { value: '123abc456', name: 'phone' } });
@@ -96,7 +111,6 @@ describe('CheckoutPage', () => {
     fireEvent.change(yearInput, { target: { value: '20', name: 'expYear' } });
 
     // 6. Submit with errors
-    const form = document.querySelector('form');
     if (form) fireEvent.submit(form);
     expect(screen.getByText(/corrige los errores/i)).toBeInTheDocument();
 

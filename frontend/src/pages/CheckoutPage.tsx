@@ -89,16 +89,21 @@ export default function CheckoutPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
+    if (!customer.fullName || !customer.email || !customer.phone || !delivery.address || !delivery.city || !payment.cardNumber || !payment.expMonth || !payment.expYear || !payment.cvc) {
+      setError('Por favor completa todos los campos requeridos.');
+      return;
+    }
+
     // Final pre-submit validation
     const hasErrors = Object.values(validationErrors).some(err => err !== '');
     if (hasErrors) {
       setError('Por favor, corrige los errores en el formulario antes de continuar.');
       return;
     }
-    if (payment.expMonth.length < 2 || payment.expYear.length < 2 || payment.cvc.length < 3) {
+    if (payment.expMonth.length < 2 || payment.expYear.length < 2 || payment.cvc.length < 3 || payment.cardNumber.length < 13) {
       setError('Por favor completa todos los datos de la tarjeta correctamente.');
       return;
     }
@@ -174,7 +179,7 @@ export default function CheckoutPage() {
             </div>
             <div className="form-group">
               <label className="form-label">Teléfono</label>
-              <input required type="tel" name="phone" value={customer.phone} onChange={e => handleInputChange(e, 'customer')} className="form-input" placeholder="+57 300 000 0000" />
+              <input required type="tel" maxLength={20} name="phone" value={customer.phone} onChange={e => handleInputChange(e, 'customer')} className="form-input" placeholder="+57 300 000 0000" />
             </div>
           </div>
 

@@ -1,5 +1,5 @@
 // Jest provides describe, it, expect globally
-import { screen } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { renderWithProviders } from '../test-utils';
 import ResultPage from './ResultPage';
 import React from 'react';
