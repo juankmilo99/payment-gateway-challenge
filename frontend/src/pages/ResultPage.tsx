@@ -50,19 +50,19 @@ export default function ResultPage() {
             : 'No pudimos procesar tu tarjeta. Por favor verifica tus datos o intenta con otro medio de pago.'}
         </p>
 
-        <div className="bg-black/20 p-4 rounded-lg mb-8 text-sm text-left border border-white/5">
-          <div className="flex justify-between mb-2">
-            <span className="text-slate-400">ID de Transacción</span>
-            <span className="font-mono text-white text-xs">{result.id.split('-')[0]}...</span>
+        <div className="bg-black/20 p-4 rounded-lg mb-8 text-sm text-left border border-white/5 space-y-4">
+          <div className="flex flex-col">
+            <span className="text-slate-400 text-xs mb-1 uppercase tracking-wider">ID de Transacción</span>
+            <span className="font-mono text-white text-sm break-all">{result.id}</span>
           </div>
-          <div className="flex justify-between mb-2">
-            <span className="text-slate-400">Estado</span>
+          <div className="flex flex-col">
+            <span className="text-slate-400 text-xs mb-1 uppercase tracking-wider">Estado</span>
             <span className="font-semibold text-white">{result.status}</span>
           </div>
           {result.providerReference && (
-            <div className="flex justify-between">
-              <span className="text-slate-400">Referencia Proveedor</span>
-              <span className="font-mono text-white text-xs">{result.providerReference}</span>
+            <div className="flex flex-col">
+              <span className="text-slate-400 text-xs mb-1 uppercase tracking-wider">Referencia Proveedor</span>
+              <span className="font-mono text-emerald-400 text-sm break-all">{result.providerReference}</span>
             </div>
           )}
         </div>
