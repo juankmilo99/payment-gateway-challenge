@@ -82,27 +82,27 @@ export default function ProductPage() {
                   src={product.imageUrl} 
                   alt={product.name}
                   loading="lazy"
-                  style={{ width: '120px', height: '120px', objectFit: 'contain' }}
+                  style={{ width: '125px', height: '125px', objectFit: 'contain' }}
                   className="transition-transform hover:scale-110 duration-500 drop-shadow-2xl"
                 />
               ) : (
-                <div style={{ width: '120px', height: '120px' }} className="bg-gradient-to-br from-indigo-500/20 to-purple-600/20 flex items-center justify-center rounded-lg">
+                <div style={{ width: '125px', height: '125px' }} className="bg-gradient-to-br from-indigo-500/20 to-purple-600/20 flex items-center justify-center rounded-lg">
                   <ShoppingBag size={48} className="text-indigo-400 opacity-80" />
                 </div>
               )}
             </div>
-            <div className="p-6 flex flex-col flex-1 items-center text-center">
-              <h2 className="text-xl font-bold mb-3 text-white line-clamp-2">{product.name}</h2>
-              <p className="text-slate-400 text-sm mb-6 line-clamp-3 flex-1">
+            <div className="p-6 flex flex-col flex-1 items-center justify-center text-center">
+              <h2 className="text-xl font-bold mb-3 text-white line-clamp-2 text-center w-full">{product.name}</h2>
+              <p className="text-slate-400 text-sm mb-6 line-clamp-3 flex-1 text-center w-full">
                 {product.description}
               </p>
               
-              <div className="flex w-full items-center justify-between mb-6 px-2">
-                <div className="text-left">
+              <div className="flex flex-col w-full items-center justify-center mb-6 gap-3">
+                <div className="text-center">
                   <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">Precio</p>
                   <p className="text-2xl font-bold text-white">${(product.price / 100).toFixed(2)}</p>
                 </div>
-                <div className="text-right">
+                <div className="text-center">
                   <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">Disponibilidad</p>
                   {product.stock > 0 ? (
                     <p className="text-emerald-400 font-medium">{product.stock} disp.</p>
