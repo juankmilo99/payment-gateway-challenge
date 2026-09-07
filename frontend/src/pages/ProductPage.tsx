@@ -71,13 +71,24 @@ export default function ProductPage() {
   }
 
   return (
-    <div className="container animate-slide-up pb-12">
-      <h1 className="text-3xl font-bold mb-8 text-center text-white">Nuestros Productos</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="container animate-slide-up pb-12 mt-4">
+      <h1 className="text-3xl font-bold mb-10 text-center text-white">Nuestros Productos</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
         {products.map((product) => (
-          <div key={product.id} className="card overflow-hidden p-0 flex flex-col border border-white/10 hover:border-indigo-500/50 transition-colors">
-            <div className="h-48 bg-gradient-to-br from-indigo-500/20 to-purple-600/20 flex items-center justify-center border-b border-white/5">
-              <ShoppingBag size={64} className="text-indigo-400 opacity-80" />
+          <div key={product.id} className="card overflow-hidden p-0 flex flex-col border border-white/10 hover:border-indigo-500/50 transition-all hover:-translate-y-1">
+            <div className="h-48 bg-black/40 border-b border-white/5 overflow-hidden">
+              {product.imageUrl ? (
+                <img 
+                  src={product.imageUrl} 
+                  alt={product.name}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-indigo-500/20 to-purple-600/20 flex items-center justify-center">
+                  <ShoppingBag size={64} className="text-indigo-400 opacity-80" />
+                </div>
+              )}
             </div>
             <div className="p-6 flex flex-col flex-1">
               <h2 className="text-xl font-bold mb-2 text-white">{product.name}</h2>
