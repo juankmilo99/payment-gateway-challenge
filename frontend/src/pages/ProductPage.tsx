@@ -47,7 +47,7 @@ export default function ProductPage() {
 
   if (loading) {
     return (
-      <div className="w-full max-w-6xl mx-auto px-6 py-8 flex-1 flex flex-col items-center justify-center">
+      <div className="container flex-1 flex flex-col items-center justify-center">
         <Spinner 
           size="lg" 
           message="Conectando con la tienda..." 
@@ -59,8 +59,8 @@ export default function ProductPage() {
 
   if (error || products.length === 0) {
     return (
-      <div className="w-full max-w-6xl mx-auto px-6 py-8 flex-1 flex flex-col items-center justify-center">
-        <div className="card text-center p-8 max-w-md w-full">
+      <div className="container flex-1 flex flex-col items-center justify-center">
+        <div className="card text-center p-8 w-full">
           <p className="text-red-400 mb-4">{error || 'No hay productos disponibles'}</p>
           <button onClick={() => window.location.reload()} className="btn btn-primary">
             Reintentar
@@ -71,9 +71,9 @@ export default function ProductPage() {
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-6 py-8 animate-slide-up flex flex-col flex-grow">
-      <h1 className="text-3xl md:text-4xl font-bold mb-12 text-center text-white">Nuestros Productos</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
+    <div className="container animate-slide-up pb-12 mt-4">
+      <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center text-white">Nuestros Productos</h1>
+      <div className="grid grid-cols-1 gap-12">
         {products.map((product) => (
           <div key={product.id} className="card overflow-hidden p-0 flex flex-col border border-white/10 hover:border-indigo-500/50 transition-all hover:-translate-y-1">
             <div className="bg-black/40 border-b border-white/5 overflow-hidden flex items-center justify-center py-8">
