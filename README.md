@@ -46,7 +46,10 @@ Antes de ejecutar, asegúrate de crear los archivos `.env` basándote en `.env.e
 - `DATABASE_URL`: Connection string de PostgreSQL (Neon).
 - `PORT`: Puerto del servidor (ej. 3000).
 - `FRONTEND_URL`: URL permitida por CORS (ej. http://localhost:5173).
-- `PSP_INTEGRITY_KEY`: Secreto usado para firmas transaccionales.
+- `PSP_PUBLIC_KEY`: Llave pública del proveedor de pagos.
+- `PSP_PRIVATE_KEY`: Llave privada del proveedor de pagos.
+- `PSP_EVENTS_KEY`: Llave para eventos webhooks del PSP.
+- `PSP_INTEGRITY_KEY`: Secreto usado para firmas transaccionales (se usa exclusivamente en el backend).
 
 **Frontend:**
 - `VITE_API_URL`: URL del backend (ej. http://localhost:3000).
