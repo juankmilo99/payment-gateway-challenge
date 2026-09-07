@@ -77,9 +77,9 @@ export default function CheckoutPage() {
     <div className="container py-8 animate-slide-up">
       <button 
         onClick={() => navigate('/')} 
-        className="flex items-center text-sm text-slate-400 hover:text-white mb-6 transition-colors"
+        className="btn border border-white/20 bg-black/20 hover:bg-white/10 text-white mb-6 max-w-[240px] transition-all"
       >
-        <ChevronLeft size={16} className="mr-1" /> Volver al producto
+        <ChevronLeft size={18} className="mr-2" /> Volver a productos
       </button>
 
       <div className="card mb-6">
