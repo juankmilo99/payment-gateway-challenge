@@ -2,6 +2,10 @@
 
 Aplicación Fullstack de Checkout para un solo producto, integrada a una pasarela de pagos (PSP) simulada en Sandbox. Este proyecto destaca por un enfoque estricto en UX/UI, validación en tiempo real y resiliencia.
 
+## 🔗 Enlaces en Vivo (Producción)
+- **Frontend (Aplicación Web):** [https://payment-gateway-test-juanc.netlify.app/](https://payment-gateway-test-juanc.netlify.app/)
+- **Backend (Swagger API Docs):** [https://payment-gateway-challenge-bc.onrender.com/api/docs](https://payment-gateway-challenge-bc.onrender.com/api/docs)
+
 ## 🎯 Características Principales (UX/UI & Negocio)
 
 - **Checkout de Alta Conversión:** SPA de 3 pasos (Producto, Pago, Resultado) con un diseño *premium* (modo oscuro, gradientes y animaciones sutiles).
