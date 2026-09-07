@@ -1,11 +1,16 @@
-import { describe, it, expect, vi } from 'vitest';
+// Jest provides describe, it, expect, jest globally
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../test-utils';
 import CheckoutPage from './CheckoutPage';
 import { api } from '../services/api';
 import React from 'react';
 
-vi.mock('../services/api');
+jest.mock('../services/api');
+jest.mock('lucide-react', () => ({
+  ChevronLeft: () => 'ChevronLeft',
+  CreditCard: () => 'CreditCard',
+  Loader2: () => 'Loader2'
+}));
 
 describe('CheckoutPage', () => {
   const preloadedState = {
@@ -40,7 +45,7 @@ describe('CheckoutPage', () => {
     fireEvent.change(screen.getByPlaceholderText('Bogotá'), { target: { value: 'Bogota', name: 'city' } });
     fireEvent.change(screen.getByPlaceholderText('Como aparece en la tarjeta'), { target: { value: 'Juan', name: 'cardHolder' } });
     fireEvent.change(screen.getByPlaceholderText('MM'), { target: { value: '12', name: 'expMonth' } });
-    fireEvent.change(screen.getByPlaceholderText('YY'), { target: { value: '25', name: 'expYear' } });
+    fireEvent.change(screen.getByPlaceholderText('YY'), { target: { value: '30', name: 'expYear' } });
     fireEvent.change(screen.getByPlaceholderText('123'), { target: { value: '123', name: 'cvc' } });
     
     // Fix CreditCardInput query

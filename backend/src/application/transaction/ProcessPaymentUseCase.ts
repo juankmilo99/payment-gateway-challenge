@@ -1,11 +1,13 @@
 import { Injectable, Inject } from '@nestjs/common';
+import * as crypto from 'crypto';
 import { Result } from '../../domain/shared/Result';
 import { ProcessPaymentDTO } from './ProcessPaymentDTO';
-import { IProductRepository } from '../../domain/product/IProductRepository';
-import { ITransactionRepository } from '../../domain/transaction/ITransactionRepository';
-import { ICustomerRepository } from '../../domain/customer/ICustomerRepository';
-import { IDeliveryRepository } from '../../domain/delivery/IDeliveryRepository';
-import { IPaymentProvider, PaymentStatus } from '../../domain/payment/IPaymentProvider';
+import type { IProductRepository } from '../../domain/product/IProductRepository';
+import type { ITransactionRepository } from '../../domain/transaction/ITransactionRepository';
+import type { ICustomerRepository } from '../../domain/customer/ICustomerRepository';
+import type { IDeliveryRepository } from '../../domain/delivery/IDeliveryRepository';
+import type { IPaymentProvider } from '../../domain/payment/IPaymentProvider';
+import { PaymentStatus } from '../../domain/payment/IPaymentProvider';
 import { Transaction, TransactionStatus } from '../../domain/transaction/Transaction';
 import { Customer } from '../../domain/customer/Customer';
 import { Delivery } from '../../domain/delivery/Delivery';
@@ -55,7 +57,6 @@ export class ProcessPaymentUseCase {
       await this.transactionRepo.create(transaction);
 
       // 3.5. Generate Integrity Signature (simulated)
-      const crypto = require('crypto');
       const integrityKey = process.env.PSP_INTEGRITY_KEY || 'default_test_key';
       const integrityString = `${transaction.id}${transaction.totalAmount}COP${integrityKey}`;
       const integritySignature = crypto.createHash('sha256').update(integrityString).digest('hex');

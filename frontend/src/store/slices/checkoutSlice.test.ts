@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+// Jest provides describe, it, expect globally
 import reducer, { setProduct, updateCustomer, clearSensitiveData, updateDelivery, updatePayment, setTransactionResult, resetCheckout } from './checkoutSlice';
 
 describe('checkoutSlice', () => {

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+// Jest provides describe, it, expect globally
 import { Spinner } from './Spinner';
 import React from 'react';
 

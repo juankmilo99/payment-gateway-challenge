@@ -1,45 +1,63 @@
 # Payment Gateway Challenge 🚀
 
-Aplicación Fullstack de Checkout para un solo producto, integrada a una pasarela de pagos (PSP) simulada en Sandbox. Este proyecto destaca por un enfoque estricto en UX/UI, validación en tiempo real y resiliencia.
+Aplicación Fullstack de Checkout integrada a una pasarela de pagos (PSP) simulada. Construida con un enfoque estricto en **UX/UI premium**, **validaciones rigurosas**, **seguridad** y **testing con Jest**.
 
-## 🔗 Enlaces en Vivo (Producción)
+## 🔗 Enlaces de Producción
+
 - **Frontend (Aplicación Web):** [https://payment-gateway-test-juanc.netlify.app/](https://payment-gateway-test-juanc.netlify.app/)
 - **Backend (Swagger API Docs):** [https://payment-gateway-challenge-bc.onrender.com/api/docs](https://payment-gateway-challenge-bc.onrender.com/api/docs)
 
-## 🎯 Características Principales (UX/UI & Negocio)
+## ✨ Características Principales
 
-- **Checkout de Alta Conversión:** SPA de 3 pasos (Producto, Pago, Resultado) con un diseño *premium* (modo oscuro, gradientes y animaciones sutiles).
-- **Validación Reactiva (Real-Time):** Los campos sensibles como tarjeta de crédito y teléfono rechazan letras de inmediato y notifican si la tarjeta ingresada ya expiró.
-- **Detección Dinámica de Tarjeta (Bonus):** El logotipo de **Visa** (iniciando con 4) o **Mastercard** (iniciando con 5) aparece dinámicamente según lo que digita el usuario.
-- **Resiliencia al Refresh:** El estado del carrito (excepto datos sensibles de pago) se guarda usando `redux-persist`. Si el usuario recarga la página por accidente, no pierde sus datos.
-- **Manejo de Servidores Inactivos (Cold Start):** Dado el *free tier* de Render, si el servidor está dormido, el Frontend ajusta dinámicamente sus *timeouts* e informa al usuario con un spinner amigable mientras el servidor despierta (hasta 45s).
-- **Resultados de Pago Claros:** IDs de transacción truncados con botón interactivo de "Copiar al portapapeles", colores semánticos claros (Verde para éxito) y estructura limpia de grillas.
+- **Flujo de 5 Pasos (5-step business process):** Sigue estrictamente el flujo requerido: `Product page -> Credit Card/Delivery info -> Summary -> Final status -> Product page`.
+- **Diseño Premium y Resiliente:** Temática oscura, variables CSS personalizables y estado persistente ante recargas accidentales (`redux-persist`).
+- **Validación Avanzada:** Filtra letras en campos numéricos en tiempo real, notifica expiración de tarjeta y usa DTOs estrictos en el backend.
+- **Logo Dinámico (Bonus):** El logo de **Visa** o **Mastercard** se actualiza dinámicamente según los dígitos de la tarjeta introducidos.
+- **Cold Start Handle:** Ajuste de timeouts y UI interactiva mientras el backend en *free-tier* despierta.
 
-## 🏗️ Arquitectura y Tecnologías
+## 🛡️ Seguridad y OWASP (Bonus)
 
-### Backend (NestJS)
-- **Arquitectura Hexagonal (Ports & Adapters)** combinada con **ROP (Railway Oriented Programming)** para control de flujos de pago robustos.
-- **Base de Datos (Neon / PostgreSQL):** Gestionada con **Prisma ORM**. Los montos se manejan rigurosamente en *centavos* (Enteros) para evitar errores de precisión flotante.
-- **Validación Fuerte:** DTOs interceptan peticiones API. Bloquean tarjetas con letras (`@IsNumberString()`) y garantizan longitud (`@Length()`).
-- **Swagger UI:** Documentación interactiva autogenerada disponible en `/api/docs`.
+- **Helmet & CORS:** Cabeceras HTTP seguras configuradas mediante `helmet` y políticas de CORS restrictivas en el backend.
+- **Sanitización de Datos:** No se almacenan ni registran en logs los datos sensibles de tarjetas (CVC, número completo). El frontend limpia los inputs numéricos contra inyección.
+- **Protección de Precisión:** Uso estricto de enteros (centavos) para evitar vulnerabilidades de truncamiento flotante.
 
-### Frontend (React + Vite + Tailwind CSS)
-- **Gestión de Estado:** Redux Toolkit.
-- **Maquetación:** Tailwind CSS. Interfaz móvil responsive construida con *flexbox* y variables CSS para soporte rápido a temas personalizados.
-- **Despliegue Configurado (Netlify):** `netlify.toml` preparado para rutear SPA (`/* -> /index.html`).
+## 🗄️ Modelo de Datos (Data Model Design)
 
-## 🚀 Guía de Ejecución Local
+La base de datos relacional (PostgreSQL) está estructurada en 4 tablas principales:
 
-**Requisitos:** Node.js v20+, npm.
+- **Product:** Catálogo (id, name, description, price, stock, imageUrl).
+- **Customer:** Datos del cliente (id, email, fullName, phone).
+- **Delivery:** Información de envío (id, address, city, region, zipCode).
+- **Transaction:** Registro transaccional central. Relaciona 1:1 con *Customer* y *Delivery*, y N:1 con *Product*. Almacena el `status` (APPROVED/REJECTED), el monto (`totalAmount`) y la referencia del proveedor (`providerReference`).
+
+## 🛠️ Tecnologías Utilizadas
+
+- **Frontend:** React, Vite, Tailwind CSS, Redux Toolkit.
+- **Backend:** NestJS, Prisma ORM, PostgreSQL (Neon).
+- **Testing:** Jest + Testing Library.
+
+## 🚀 Guía Rápida Local
+
+### Variables de Entorno (.env)
+
+Antes de ejecutar, asegúrate de crear los archivos `.env` basándote en `.env.example`:
+
+**Backend:**
+- `DATABASE_URL`: Connection string de PostgreSQL (Neon).
+- `PORT`: Puerto del servidor (ej. 3000).
+- `FRONTEND_URL`: URL permitida por CORS (ej. http://localhost:5173).
+- `PSP_INTEGRITY_KEY`: Secreto usado para firmas transaccionales.
+
+**Frontend:**
+- `VITE_API_URL`: URL del backend (ej. http://localhost:3000).
 
 ### 1. Levantar el Backend (NestJS)
 ```bash
 cd backend
 npm install
-cp .env.example .env # Agrega tu DATABASE_URL de Neon
-npx prisma generate
-npx prisma db push
-npm run prisma:seed # Sube los productos de prueba a la DB
+cp .env.example .env # Configura las variables mencionadas
+npx prisma generate && npx prisma migrate deploy
+npm run prisma:seed  # Crea productos iniciales
 npm run start
 ```
 
@@ -47,16 +65,12 @@ npm run start
 ```bash
 cd frontend
 npm install
-cp .env.example .env # Asegura VITE_API_URL="http://localhost:3000"
+cp .env.example .env
 npm run dev
 ```
 
-## 🧪 Pruebas Unitarias (Test Coverage)
+## 🧪 Pruebas Unitarias (Jest)
 
-Ambas capas superan el **80% de cobertura** estipulado, ejecutadas con **Vitest**:
-- **Backend:** `npm run test:cov` (>93% Global. Cubre Casos de Uso y Controladores).
-- **Frontend:** `npx vitest run --coverage` (>81% Global. Cubre Store, Páginas Core y Componentes de UI).
-
-## ☁️ Despliegue en Producción
-- **Frontend:** Netlify. 
-- **Backend:** Render (Web Service). Automático vía `render.yaml` (Infrastructure as Code).
+Ambas capas cumplen el **>80% de cobertura**, ejecutadas 100% con **Jest**:
+- **Backend:** `npm run test:cov` (Cubre Casos de Uso y Controladores).
+- **Frontend:** `npm run test:cov` (Cubre Store, Páginas y Validaciones).

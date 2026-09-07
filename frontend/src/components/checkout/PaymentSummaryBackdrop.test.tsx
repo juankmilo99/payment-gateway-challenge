@@ -1,4 +1,3 @@
-import { describe, it, expect, vi } from 'vitest';
 import { screen, fireEvent } from '@testing-library/react';
 import { renderWithProviders } from '../../test-utils';
 import { PaymentSummaryBackdrop } from './PaymentSummaryBackdrop';
@@ -6,8 +5,8 @@ import React from 'react';
 
 describe('PaymentSummaryBackdrop', () => {
   it('renders summary details correctly', () => {
-    const onConfirm = vi.fn();
-    const onCancel = vi.fn();
+    const onConfirm = jest.fn();
+    const onCancel = jest.fn();
     
     renderWithProviders(
       <PaymentSummaryBackdrop 
@@ -29,8 +28,8 @@ describe('PaymentSummaryBackdrop', () => {
   });
 
   it('calls onConfirm when button clicked', () => {
-    const onConfirm = vi.fn();
-    const onCancel = vi.fn();
+    const onConfirm = jest.fn();
+    const onCancel = jest.fn();
     
     renderWithProviders(
       <PaymentSummaryBackdrop 
@@ -47,7 +46,7 @@ describe('PaymentSummaryBackdrop', () => {
     renderWithProviders(
       <PaymentSummaryBackdrop 
         productName="Test" productPrice={1000} baseFee={200} deliveryFee={100} isLoading={true} 
-        onConfirm={vi.fn()} onCancel={vi.fn()} 
+        onConfirm={jest.fn()} onCancel={jest.fn()} 
       />
     );
     

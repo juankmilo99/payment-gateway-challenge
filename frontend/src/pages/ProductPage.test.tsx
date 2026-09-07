@@ -1,11 +1,16 @@
-import { describe, it, expect, vi } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../test-utils';
 import ProductPage from './ProductPage';
 import { api } from '../services/api';
 import React from 'react';
 
-vi.mock('../services/api');
+// Mock API
+jest.mock('../services/api', () => ({
+  api: {
+    get: jest.fn(),
+  },
+}));
 
 describe('ProductPage', () => {
   it('renders loading initially', () => {

@@ -3,8 +3,7 @@ import { Product } from '../../domain/product/Product';
 import { Customer } from '../../domain/customer/Customer';
 import { Transaction, TransactionStatus } from '../../domain/transaction/Transaction';
 import { PaymentStatus } from '../../domain/payment/IPaymentProvider';
-
-import { vi } from 'vitest';
+import { jest } from '@jest/globals';
 
 describe('ProcessPaymentUseCase', () => {
   let useCase: ProcessPaymentUseCase;
@@ -15,11 +14,11 @@ describe('ProcessPaymentUseCase', () => {
   let paymentProvider: any;
 
   beforeEach(() => {
-    productRepo = { findById: vi.fn(), update: vi.fn() };
-    transactionRepo = { create: vi.fn(), update: vi.fn() };
-    customerRepo = { findByEmail: vi.fn(), create: vi.fn() };
-    deliveryRepo = { create: vi.fn() };
-    paymentProvider = { processPayment: vi.fn() };
+    productRepo = { findById: jest.fn(), update: jest.fn() };
+    transactionRepo = { create: jest.fn(), update: jest.fn() };
+    customerRepo = { findByEmail: jest.fn(), create: jest.fn() };
+    deliveryRepo = { create: jest.fn() };
+    paymentProvider = { processPayment: jest.fn() };
 
     useCase = new ProcessPaymentUseCase(
       productRepo,
@@ -34,7 +33,7 @@ describe('ProcessPaymentUseCase', () => {
     productId: 'prod-1',
     customer: { email: 'test@test.com', fullName: 'Test User' },
     delivery: { address: '123 Main St', city: 'Test City' },
-    payment: { cardNumber: '4111111111111', expMonth: '12', expYear: '25', cvc: '123', cardHolder: 'Test User' },
+    payment: { cardNumber: '4111111111111', expMonth: '12', expYear: '30', cvc: '123', cardHolder: 'Test User' },
   });
 
   it('should fail if product not found', async () => {
