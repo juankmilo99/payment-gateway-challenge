@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
@@ -29,7 +29,7 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, document);
 
   // Health endpoint for cold start wake-up
-  app.getHttpAdapter().get('/health', (req, res) => {
+  app.getHttpAdapter().get('/health', (req: any, res: any) => {
     res.status(200).send({ status: 'OK' });
   });
 

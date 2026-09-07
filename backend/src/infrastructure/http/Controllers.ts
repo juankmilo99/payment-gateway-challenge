@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
-import { GetProductsUseCase } from '../../../application/product/GetProductsUseCase';
-import { ProcessPaymentUseCase } from '../../../application/transaction/ProcessPaymentUseCase';
+import { GetProductsUseCase } from '../../application/product/GetProductsUseCase';
+import { ProcessPaymentUseCase } from '../../application/transaction/ProcessPaymentUseCase';
 import { PaymentRequestDto } from './dto/PaymentRequestDto';
 
 @Controller('products')
@@ -11,7 +11,7 @@ export class ProductController {
   async getProducts() {
     const result = await this.getProductsUseCase.execute();
     if (result.isFailure) {
-      throw new HttpException(result.error, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(result.error || 'Unknown error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
     return result.getValue();
   }
