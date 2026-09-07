@@ -73,7 +73,7 @@ export default function ProductPage() {
   return (
     <div className="container animate-slide-up pb-12 mt-4">
       <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center text-white">Nuestros Productos</h1>
-      <div className="grid grid-cols-1 gap-12">
+      <div className="flex flex-col space-y-12">
         {products.map((product) => (
           <div key={product.id} className="card overflow-hidden p-0 flex flex-col border border-white/10 hover:border-indigo-500/50 transition-all hover:-translate-y-1">
             <div className="bg-black/40 border-b border-white/5 overflow-hidden flex items-center justify-center py-8">
